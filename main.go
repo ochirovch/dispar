@@ -32,7 +32,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", hello).Methods("GET")
-	router.HandleFunc("/", robots).Methods("GET")
+	router.HandleFunc("/robots.txt", robots).Methods("GET")
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	http.ListenAndServe(":80", nil)
