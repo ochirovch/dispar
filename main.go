@@ -8,19 +8,21 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type Todo struct {
-	Title string
-	Done  bool
-}
-
-type TodoPageData struct {
-	PageTitle string
-	Todos     []Todo
+type Settings struct {
+	ProjectName         string
+	PaginationType      string
+	PaginationURL       string
+	PaginationStartPage int
+	PaginationEndPage   int
+	CurrentPage         int
+	LinkXPath           string
+	ContentXPath        string
+	DataXPath           []string // Data in Content
 }
 
 func hello(w http.ResponseWriter, req *http.Request) {
 	tmpl := template.Must(template.ParseFiles("index.html"))
-	data := TodoPageData{}
+	data := Settings{}
 	tmpl.Execute(w, data)
 }
 
@@ -33,7 +35,6 @@ func main() {
 
 	router.HandleFunc("/", hello).Methods("GET")
 	router.HandleFunc("/robots.txt", robots).Methods("GET")
-	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	http.ListenAndServe(":80", nil)
 }
