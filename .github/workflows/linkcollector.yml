@@ -1,0 +1,27 @@
+name: Go
+
+on:
+  push:
+    paths:
+      - 'GoogleCloudFunctions/LinkCollector/LinkCollector.go'
+  pull_request:
+    paths:
+      - 'GoogleCloudFunctions/LinkCollector/LinkCollector.go'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - id: deploy
+      uses: google-github-actions/deploy-cloud-functions@main
+      with:
+        name: disparLinkCollector
+        runtime: go116
+        credentials: ${{ secrets.gcp_credentials }}
+        entry_point: LinkCollector
+        memory_mb: 128MB
+        region: europe-west3
+        event_trigger_type: providers/cloud.firestore/eventTypes/document.create
+        trigger-resource: projects/${{ dispar.PROJECTNAME }}/databases/(default)/documents/DisparSettings/ProjectName"
