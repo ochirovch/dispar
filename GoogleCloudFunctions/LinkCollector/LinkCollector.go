@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"strconv"
 
 	pubsub "cloud.google.com/go/pubsub"
@@ -15,11 +14,11 @@ import (
 
 const (
 	begin = 1
-	end   = 6
+	end   = 2
 )
 
 func LinkCollector(w http.ResponseWriter, req *http.Request) {
-	projectID := os.Getenv("DISPARPROJECT")
+	projectID := "coludfunc"
 	ctx := context.Background()
 	client, err := pubsub.NewClient(ctx, projectID)
 	if err != nil {
