@@ -38,6 +38,10 @@ func LinkCollector(w http.ResponseWriter, req *http.Request) {
 		sendUrlToPubSub(client, t, e.Attr("href"))
 	})
 
+	c.OnHTML("html", func(e *colly.HTMLElement) { // Title
+		log.Println(e.Text)
+	})
+
 	c.OnError(func(r *colly.Response, err error) {
 		log.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
 	})
