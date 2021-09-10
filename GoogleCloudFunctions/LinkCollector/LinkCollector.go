@@ -10,7 +10,7 @@ import (
 
 const (
 	begin = 1
-	end   = 8
+	end   = 7
 )
 
 func LinkCollector(w http.ResponseWriter, req *http.Request) {
