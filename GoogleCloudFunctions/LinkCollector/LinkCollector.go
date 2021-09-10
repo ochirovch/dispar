@@ -33,7 +33,7 @@ func LinkCollector(w http.ResponseWriter, req *http.Request) {
 	c := colly.NewCollector()
 
 	// add data to pub sub channel page project;url
-	c.OnHTML(".news-item__body > a", func(e *colly.HTMLElement) {
+	c.OnHTML(".news-item__content > a", func(e *colly.HTMLElement) {
 		log.Println(e.Attr("href"))
 		sendUrlToPubSub(client, t, e.Attr("href"))
 	})
