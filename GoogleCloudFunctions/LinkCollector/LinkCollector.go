@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"sync/atomic"
 
-	"cloud.google.com/go/pubsub"
+	pubsub "cloud.google.com/go/pubsub"
 	"github.com/gocolly/colly/v2"
-	pubsub "google.golang.org/genproto/googleapis/pubsub/v1beta2"
+	//pubsub "google.golang.org/genproto/googleapis/pubsub/v1beta2"
 )
 
 const (
