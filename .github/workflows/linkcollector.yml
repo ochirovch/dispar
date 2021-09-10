@@ -24,4 +24,4 @@ jobs:
         memory_mb: 128MB
         region: europe-west3
         event_trigger_type: providers/cloud.firestore/eventTypes/document.create
-        event_trigger_resource: /DisparSettings/{ProjectName}"
+        event_trigger_resource: DisparSettings/{ProjectName}"
