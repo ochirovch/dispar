@@ -39,7 +39,7 @@ func LinkCollector(w http.ResponseWriter, req *http.Request) {
 	})
 
 	c.OnHTML("html", func(e *colly.HTMLElement) { // Title
-		log.Println(e.Text)
+		log.Println(string(e.Response.Body))
 	})
 
 	c.OnError(func(r *colly.Response, err error) {
