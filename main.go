@@ -22,7 +22,7 @@ type Settings struct {
 	PaginationStartPage int
 	PaginationEndPage   int
 	CurrentPage         int
-	LinkXPath           string
+	LinkSelector        string
 	ContentXPath        string
 	DataXPath           []string // Data in Content
 }

@@ -28,3 +28,4 @@ jobs:
         event_trigger_type: providers/cloud.firestore/eventTypes/document.create
         event_trigger_resource: projects/${{ secrets.projectname }}/databases/(default)/documents/DisparSettings/{ProjectName}
         source_dir: GoogleCloudFunctions/LinkCollector/
+        env_vars: DISPARPROJECT=${{ secrets.projectname }}
