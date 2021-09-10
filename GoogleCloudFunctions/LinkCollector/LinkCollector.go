@@ -59,7 +59,7 @@ func (v FirestoreValue) getStringValue(name string) (string, error) {
 }
 
 // HelloFirestore is triggered by a change to a Firestore document.
-func HelloFirestore(ctx context.Context, e FirestoreEvent) error {
+func LinkCollector(ctx context.Context, e FirestoreEvent) error {
 	meta, err := metadata.FromContext(ctx)
 	if err != nil {
 		return fmt.Errorf("metadata.FromContext: %v", err)
