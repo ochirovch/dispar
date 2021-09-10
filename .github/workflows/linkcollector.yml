@@ -4,9 +4,11 @@ on:
   push:
     paths:
       - 'GoogleCloudFunctions/LinkCollector/LinkCollector.go'
+      - '.github/workflows/linkcollector.yml'
   pull_request:
     paths:
-      - 'GoogleCloudFunctions/LinkCollector/LinkCollector.go'
+      'GoogleCloudFunctions/LinkCollector/LinkCollector.go'
+      - '.github/workflows/linkcollector.yml'
 
 jobs:
   deploy:
@@ -24,4 +26,4 @@ jobs:
         memory_mb: 128MB
         region: europe-west3
         event_trigger_type: providers/cloud.firestore/eventTypes/document.create
-        event_trigger_resource: DisparSettings/{ProjectName}
+        event_trigger_resource: projects/${{ secrets.projectname }}/databases/(default)/documents/DisparSettings/{ProjectName}
