@@ -34,12 +34,12 @@ func LinkCollector(w http.ResponseWriter, req *http.Request) {
 
 	// add data to pub sub channel page project;url
 	c.OnHTML(".news-item__body > a", func(e *colly.HTMLElement) {
-		// e.Request.Visit(e.Attr("href"))
+		log.Println(e.Attr("href"))
 		sendUrlToPubSub(client, t, e.Attr("href"))
 	})
 
 	c.OnError(func(r *colly.Response, err error) {
-		fmt.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
+		log.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
 	})
 
 	for i := begin; i < end; i++ {
