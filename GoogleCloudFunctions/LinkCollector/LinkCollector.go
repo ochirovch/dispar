@@ -55,17 +55,31 @@ func sendUrlToPubSub(client *pubsub.Client, topic *pubsub.Topic, url string) {
 
 	ctx := context.Background()
 
+	// result := topic.Publish(ctx, &pubsub.Message{
+	// 	Data: []byte(url),
+	// })
+
+	// // The Get method blocks until a server-generated ID or
+	// // an error is returned for the published message.
+	// id, err := result.Get(ctx)
+	// if err != nil {
+	// 	// Error handling code can be added here.
+	// 	log.Printf("Failed to publish: %v", err)
+	// 	return
+	// }
+	// log.Printf("Published message; msg ID: %v\n", id)
 	result := topic.Publish(ctx, &pubsub.Message{
 		Data: []byte(url),
+		Attributes: map[string]string{
+			"origin":   "golang",
+			"username": "gcp",
+		},
 	})
-
-	// The Get method blocks until a server-generated ID or
-	// an error is returned for the published message.
+	// Block until the result is returned and a server-generated
+	// ID is returned for the published message.
 	id, err := result.Get(ctx)
 	if err != nil {
-		// Error handling code can be added here.
-		log.Printf("Failed to publish: %v", err)
-		return
+		log.Println(err)
 	}
-	log.Printf("Published message; msg ID: %v\n", id)
+	log.Println(id)
 }
