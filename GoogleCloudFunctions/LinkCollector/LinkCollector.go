@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"sync/atomic"
 
 	pubsub "cloud.google.com/go/pubsub"
 	"github.com/gocolly/colly/v2"
@@ -34,12 +33,12 @@ func LinkCollector(w http.ResponseWriter, req *http.Request) {
 
 	// add data to pub sub channel page project;url
 	c.OnHTML(".news-item__content > a", func(e *colly.HTMLElement) {
-		log.Println(e.Attr("href"))
-		sendUrlToPubSub(client, t, e.Attr("href"))
+		log.Println(e.Request.URL.Host + e.Attr("href"))
+		sendUrlToPubSub(client, t, e.Request.URL.Host+e.Attr("href"))
 	})
 
 	c.OnHTML("html", func(e *colly.HTMLElement) { // Title
-		log.Println(string(e.Response.Body))
+		//log.Println(string(e.Response.Body))
 	})
 
 	c.OnError(func(r *colly.Response, err error) {
@@ -54,7 +53,6 @@ func LinkCollector(w http.ResponseWriter, req *http.Request) {
 
 func sendUrlToPubSub(client *pubsub.Client, topic *pubsub.Topic, url string) {
 
-	var totalErrors uint64
 	ctx := context.Background()
 
 	result := topic.Publish(ctx, &pubsub.Message{
@@ -67,7 +65,6 @@ func sendUrlToPubSub(client *pubsub.Client, topic *pubsub.Topic, url string) {
 	if err != nil {
 		// Error handling code can be added here.
 		log.Printf("Failed to publish: %v", err)
-		atomic.AddUint64(&totalErrors, 1)
 		return
 	}
 	log.Printf("Published message; msg ID: %v\n", id)
