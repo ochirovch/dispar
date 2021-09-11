@@ -16,7 +16,7 @@ type PubSubMessage struct {
 }
 
 // HelloPubSub consumes a Pub/Sub message.
-func HelloPubSub(ctx context.Context, m PubSubMessage) error {
+func DataCollector(ctx context.Context, m PubSubMessage) error {
 	//	log.Println(string(m.Data))
 
 	c := colly.NewCollector()
