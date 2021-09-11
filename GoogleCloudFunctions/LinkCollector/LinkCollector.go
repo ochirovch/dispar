@@ -7,12 +7,15 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"sync"
 
 	"cloud.google.com/go/functions/metadata"
 	pubsub "cloud.google.com/go/pubsub"
 	"github.com/gocolly/colly/v2"
 	//pubsub "google.golang.org/genproto/googleapis/pubsub/v1beta2"
 )
+
+var wg sync.WaitGroup
 
 // FirestoreEvent is the payload of a Firestore event.
 // Please refer to the docs for additional information
@@ -97,10 +100,10 @@ func LinkCollector(ctx context.Context, e FirestoreEvent) error {
 	c := colly.NewCollector()
 
 	// add data to pub sub channel page project;url  LinkSelector
-	// c.OnHTML(".news-item__content > a", func(e *colly.HTMLElement) {
 
 	c.OnHTML(LinkSelector, func(e *colly.HTMLElement) {
 		log.Println(e.Request.URL.Host + e.Attr("href"))
+		wg.Add(1)
 		sendUrlToPubSub(client, t, e.Request.URL.Host+e.Attr("href"))
 	})
 
@@ -113,11 +116,13 @@ func LinkCollector(ctx context.Context, e FirestoreEvent) error {
 		//c.Visit("https://www.chita.ru/news/?pg=" + strconv.Itoa(i))
 		c.Visit(PaginationURL + strconv.Itoa(i))
 	}
+
+	wg.Wait()
 	return nil
 }
 
 func sendUrlToPubSub(client *pubsub.Client, topic *pubsub.Topic, url string) {
-
+	defer wg.Done()
 	ctx := context.Background()
 
 	result := topic.Publish(ctx, &pubsub.Message{
