@@ -35,7 +35,7 @@ func DataCollector(ctx context.Context, m PubSubMessage) error {
 		return err
 	}
 	log.Println(doc.Data())
-	dataselector := doc.Data()["DataSelector"].string()
+	dataselector := doc.Data()["DataSelector"].(string)
 
 	// Find and visit all links
 	c.OnHTML(dataselector, func(e *colly.HTMLElement) {
