@@ -24,6 +24,14 @@ func DataCollector(ctx context.Context, m PubSubMessage) error {
 		log.Println(e.Text)
 	})
 
+	c.OnHTML("html", func(e *colly.HTMLElement) {
+		log.Println(e.Text)
+	})
+
+	c.OnError(func(r *colly.Response, err error) {
+		log.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
+	})
+
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL)
 	})
