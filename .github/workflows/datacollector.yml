@@ -21,13 +21,13 @@ jobs:
       with:
         name: disparDataCollector
         runtime: go113
-        project_id: ${{ secrets.gcp_project }}
+#        project_id: ${{ secrets.gcp_project }}
         credentials: ${{ secrets.gcp_credentials }}
         entry_point: DataCollector
-        memory_mb: 128MB
-        region: europe-west3
-        event_trigger_type: google.pubsub.topic.publish
-        event_trigger_resource: links
-        event_trigger_service: pubsub.googleapis.com
+#        memory_mb: 128MB
+#        region: europe-west3
+#        event_trigger_type: google.pubsub.topic.publish
+#        event_trigger_resource: links
+#        event_trigger_service: pubsub.googleapis.com
         source_dir: GoogleCloudFunctions/DataCollector/
 #        env_vars: DISPARPROJECT=${{ secrets.projectname }}
