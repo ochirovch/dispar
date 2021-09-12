@@ -23,7 +23,7 @@ jobs:
         runtime: go116
         project_id: ${{ secrets.gcp_project }}
         credentials: ${{ secrets.gcp_credentials }}
-        entry_point: DataCollector
+#        entry_point: DataCollector
         memory_mb: 128MB
         region: europe-west3
         event_trigger_type: providers/cloud.pubsub/eventTypes/topic.publish
