@@ -105,9 +105,18 @@ func LinkCollector(ctx context.Context, e FirestoreEvent) error {
 	c := colly.NewCollector()
 
 	c.OnHTML(LinkSelector, func(e *colly.HTMLElement) {
-		log.Println(e.Request.URL.Host + e.Attr("href"))
+
+		u := e.Request.URL
+		if err != nil {
+			log.Fatal(err)
+		}
+		rel, err := u.Parse(e.Attr("href"))
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		wg.Add(1)
-		sendUrlToPubSub(client, t, e.Request.URL.Host+e.Attr("href"), ProjectName)
+		sendUrlToPubSub(client, t, rel.String(), ProjectName)
 	})
 
 	c.OnError(func(r *colly.Response, err error) {
@@ -124,6 +133,8 @@ func LinkCollector(ctx context.Context, e FirestoreEvent) error {
 }
 
 func sendUrlToPubSub(client *pubsub.Client, topic *pubsub.Topic, url string, ProjectName string) {
+	log.Println(url)
+
 	defer wg.Done()
 	ctx := context.Background()
 
