@@ -1,5 +1,4 @@
-// Package p contains a Pub/Sub Cloud Function.
-package p
+package DataCollector
 
 import (
 	"context"
@@ -17,7 +16,6 @@ type PubSubMessage struct {
 
 // HelloPubSub consumes a Pub/Sub message.
 func DataCollector(ctx context.Context, m PubSubMessage) error {
-	//	log.Println(string(m.Data))
 
 	c := colly.NewCollector()
 
