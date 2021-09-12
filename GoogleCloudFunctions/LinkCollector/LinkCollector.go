@@ -74,6 +74,11 @@ func LinkCollector(ctx context.Context, e FirestoreEvent) error {
 		log.Println(err)
 	}
 
+	ProjectName, err := e.Value.getStringValue("ProjectName")
+	if err != nil {
+		log.Println(err)
+	}
+
 	LinkSelector, err := e.Value.getStringValue("LinkSelector")
 	if err != nil {
 		log.Println(err)
@@ -99,12 +104,10 @@ func LinkCollector(ctx context.Context, e FirestoreEvent) error {
 
 	c := colly.NewCollector()
 
-	// add data to pub sub channel page project;url  LinkSelector
-
 	c.OnHTML(LinkSelector, func(e *colly.HTMLElement) {
 		log.Println(e.Request.URL.Host + e.Attr("href"))
 		wg.Add(1)
-		sendUrlToPubSub(client, t, e.Request.URL.Host+e.Attr("href"))
+		sendUrlToPubSub(client, t, e.Request.URL.Host+e.Attr("href"), ProjectName)
 	})
 
 	c.OnError(func(r *colly.Response, err error) {
@@ -113,7 +116,6 @@ func LinkCollector(ctx context.Context, e FirestoreEvent) error {
 
 	for i := PaginationStartPage; i <= PaginationEndPage; i++ {
 		fmt.Println(i)
-		//c.Visit("https://www.chita.ru/news/?pg=" + strconv.Itoa(i))
 		c.Visit(PaginationURL + strconv.Itoa(i))
 	}
 
@@ -121,12 +123,15 @@ func LinkCollector(ctx context.Context, e FirestoreEvent) error {
 	return nil
 }
 
-func sendUrlToPubSub(client *pubsub.Client, topic *pubsub.Topic, url string) {
+func sendUrlToPubSub(client *pubsub.Client, topic *pubsub.Topic, url string, ProjectName string) {
 	defer wg.Done()
 	ctx := context.Background()
 
 	result := topic.Publish(ctx, &pubsub.Message{
 		Data: []byte(url),
+		Attributes: map[string]string{
+			"project": ProjectName,
+		},
 	})
 	// Block until the result is returned and a server-generated
 	// ID is returned for the published message.
