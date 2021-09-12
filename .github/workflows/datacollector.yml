@@ -19,7 +19,7 @@ jobs:
     - id: deploy
       uses: google-github-actions/deploy-cloud-functions@main
       with:
-        name: disparMyDataCollector
+        name: disparDataCollector
         runtime: go116
         project_id: ${{ secrets.gcp_project }}
         credentials: ${{ secrets.gcp_credentials }}
