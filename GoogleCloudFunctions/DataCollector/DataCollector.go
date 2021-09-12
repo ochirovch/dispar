@@ -28,7 +28,7 @@ func DataCollector(ctx context.Context, m PubSubMessage) error {
 		log.Fatalf("Failed to create client: %v", err)
 	}
 
-	iter := client.Collection("disparSettings").Where("ProjectName", "==", attrs["project"]).Documents(ctx)
+	iter := client.Collection("DisparSettings").Where("ProjectName", "==", attrs["project"]).Documents(ctx)
 	doc, err := iter.Next()
 	if err != nil {
 		log.Println(err)
