@@ -4,8 +4,8 @@ import (
 	"cloud.google.com/go/firestore"
 	"context"
 	"github.com/gocolly/colly"
-	"google.golang.org/api/iterator"
 	"log"
+	"os"
 )
 
 // PubSubMessage is the payload of a Pub/Sub event. Please refer to the docs for
@@ -35,7 +35,7 @@ func DataCollector(ctx context.Context, m PubSubMessage) error {
 		return err
 	}
 	log.Println(doc.Data())
-	dataselector := doc.Data()["DataSelector"]
+	dataselector := doc.Data()["DataSelector"].string()
 
 	// Find and visit all links
 	c.OnHTML(dataselector, func(e *colly.HTMLElement) {
