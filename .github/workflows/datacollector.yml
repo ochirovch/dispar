@@ -26,7 +26,8 @@ jobs:
 #        entry_point: DataCollector
         memory_mb: 128MB
         region: europe-west3
-        event_trigger_type: providers/cloud.pubsub/eventTypes/topic.publish
+        event_trigger_type: google.pubsub.topic.publish
         event_trigger_resource: projects/${{ secrets.gcp_project }}/topics/links
+        event_trigger_service: pubsub.googleapis.com
         source_dir: GoogleCloudFunctions/DataCollector/
         env_vars: DISPARPROJECT=${{ secrets.projectname }}
