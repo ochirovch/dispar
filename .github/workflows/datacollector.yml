@@ -20,12 +20,12 @@ jobs:
       uses: google-github-actions/deploy-cloud-functions@main
       with:
         name: disparDataCollector
-        runtime: go116
+        runtime: go113
         project_id: ${{ secrets.gcp_project }}
         credentials: ${{ secrets.gcp_credentials }}
 #        entry_point: DataCollector
         memory_mb: 128MB
-        region: europe-west3
+#        region: europe-west3
         event_trigger_type: google.pubsub.topic.publish
         event_trigger_resource: projects/${{ secrets.gcp_project }}/topics/links
         event_trigger_service: pubsub.googleapis.com
