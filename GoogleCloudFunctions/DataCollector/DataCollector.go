@@ -20,8 +20,8 @@ func DataCollector(ctx context.Context, m PubSubMessage) error {
 	c := colly.NewCollector()
 
 	// Find and visit all links
-	c.OnHTML(".pane__button", func(e *colly.HTMLElement) {
-		log.Println(e.Attr("href"))
+	c.OnHTML(".masha_index", func(e *colly.HTMLElement) {
+		log.Println(e.Text)
 	})
 
 	c.OnRequest(func(r *colly.Request) {
