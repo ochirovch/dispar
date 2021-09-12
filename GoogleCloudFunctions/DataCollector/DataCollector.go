@@ -1,11 +1,11 @@
 package DataCollector
 
 import (
+	"cloud.google.com/go/firestore"
 	"context"
-	"fmt"
-	"log"
-
 	"github.com/gocolly/colly"
+	"google.golang.org/api/iterator"
+	"log"
 )
 
 // PubSubMessage is the payload of a Pub/Sub event. Please refer to the docs for
@@ -21,6 +21,12 @@ func DataCollector(ctx context.Context, m PubSubMessage) error {
 	c := colly.NewCollector()
 	attrs := m.Attributes
 	log.Println(attrs["project"])
+
+	projectID := os.Getenv("DISPARPROJECT")
+	client, err := firestore.NewClient(ctx, projectID)
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
 
 	iter := client.Collection("disparSettings").Where("ProjectName", "==", attrs["project"]).Documents(ctx)
 	doc, err := iter.Next()
@@ -41,6 +47,5 @@ func DataCollector(ctx context.Context, m PubSubMessage) error {
 	})
 
 	c.Visit(string(m.Data))
-	m.Ack()
 	return nil
 }
