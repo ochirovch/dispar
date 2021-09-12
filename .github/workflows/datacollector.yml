@@ -4,11 +4,11 @@ on:
   push:
     paths:
       - 'GoogleCloudFunctions/DataCollector/DataCollector.go'
-      - '.github/workflows/DataCollector.yml'
+      - '.github/workflows/datacollector.yml'
   pull_request:
     paths:
       - 'GoogleCloudFunctions/DataCollector/DataCollector.go'
-      - '.github/workflows/DataCollector.yml'
+      - '.github/workflows/datacollector.yml'
 
 jobs:
   deploy:
