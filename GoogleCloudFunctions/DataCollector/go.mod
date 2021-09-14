@@ -3,6 +3,7 @@ module dis.par/datacollector
 go 1.16
 
 require (
+	cloud.google.com/go/firestore v1.6.0
 	github.com/PuerkitoBio/goquery v1.7.1 // indirect
 	github.com/antchfx/htmlquery v1.2.3 // indirect
 	github.com/antchfx/xmlquery v1.3.6 // indirect
@@ -12,5 +13,4 @@ require (
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca // indirect
 	github.com/temoto/robotstxt v1.1.2 // indirect
 	golang.org/x/net v0.0.0-20210908191846-a5e095526f91 // indirect
-	google.golang.org/appengine v1.6.7 // indirect
 )
