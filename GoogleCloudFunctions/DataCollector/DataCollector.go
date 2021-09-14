@@ -37,13 +37,13 @@ func DataCollector(ctx context.Context, m PubSubMessage) error {
 	}
 	log.Println(doc.Data())
 	dataselector := doc.Data()["DataSelector"].(string)
-	dataselectors := doc.Data()["DataSelectors"].(map[string]string)
+	dataselectors := doc.Data()["DataSelectors"].(map[string]interface{})
 
 	// Find and visit all links
 	results := make(map[string]string)
 	c.OnHTML(dataselector, func(e *colly.HTMLElement) {
 		for k, v := range dataselectors {
-			results[k] = e.ChildText(v)
+			results[k] = e.ChildText(v.(string))
 		}
 		log.Printf("%+v\n", results)
 	})
