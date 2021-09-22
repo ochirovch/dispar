@@ -129,6 +129,8 @@ func LinkCollector(ctx context.Context, e FirestoreEvent) error {
 	}
 
 	wg.Wait()
+
+	//TODO: launch GCE instance to collect parsed data and save it to Google Storage
 	return nil
 }
 

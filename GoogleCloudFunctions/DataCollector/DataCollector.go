@@ -2,10 +2,12 @@ package DataCollector
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"os"
 
 	"cloud.google.com/go/firestore"
+	"cloud.google.com/go/pubsub"
 	"github.com/gocolly/colly"
 )
 
@@ -46,6 +48,7 @@ func DataCollector(ctx context.Context, m PubSubMessage) error {
 			results[k] = e.ChildText(v.(string))
 		}
 		log.Printf("%+v\n", results)
+		sendDataToPubSub(results, projectID, m.Attributes["ProjectName"])
 	})
 
 	c.OnError(func(r *colly.Response, err error) {
@@ -54,4 +57,35 @@ func DataCollector(ctx context.Context, m PubSubMessage) error {
 
 	c.Visit(string(m.Data))
 	return nil
+}
+
+func sendDataToPubSub(data map[string]string, gcpProject string, ProjectName string) {
+
+	ctx := context.Background()
+	client, err := pubsub.NewClient(ctx, gcpProject)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	topic := client.Topic("saveresults")
+
+	marshalData, err := json.Marshal(data)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	result := topic.Publish(ctx, &pubsub.Message{
+		Data: []byte(marshalData),
+		Attributes: map[string]string{
+			"project": ProjectName,
+		},
+	})
+	// Block until the result is returned and a server-generated
+	// ID is returned for the published message.
+	id, err := result.Get(ctx)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(id)
 }
