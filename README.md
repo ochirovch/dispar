@@ -1,6 +1,6 @@
 # dispar
 
-Dispar it's mean "Distibuted Parser". 
+Dispar it's mean "Distributed Parser". 
 
 The main idea is to get data very quickly using cloud capabilities. You just need to describe what data from which pages you want to get.
 
